@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "npx ts-node-dev --rs --no-notify --exit-child --transpile-only index.ts",
+    "build": "tsc",
+    "start": "node --es-module-specifier-resolution=node build/index.js",
+    "knip": "knip",
+    "test": "jest"
+  },
+  "author": "Hasib Mahmud",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.1",
+    "express": "^4.19.2",
+    "prom-client": "^15.1.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.12",
+    "eslint": "^8.49.0",
+    "nodemon": "^3.1.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  }
+}
