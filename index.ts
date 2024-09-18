@@ -12,12 +12,13 @@ register.setDefaultLabels({
 
 
 const metricsInterval = Prometheus.collectDefaultMetrics()
+
 const httpRequestDurationMicroseconds = new Prometheus.Histogram({
     name: 'http_request_duration_ms',
     help: 'Duration of HTTP requests in ms',
     labelNames: ['method', 'route', 'code'],
     // buckets for response time from 0.1ms to 1s
-    buckets: [0.1, 5, 15, 50, 100],
+    buckets: [1, 5, 15, 50, 100],
 });
 
 const counter = new Prometheus.Counter({
@@ -51,11 +52,12 @@ app.get('/user', (req: Request, res: Response<UserResponse>) => {
 });
 
 app.get('/', (req, res, next) => {
-    setTimeout(() => {
-        res.json({message: 'Hello World!'})
-        next()
-    }, Math.round(Math.random() * 200))
+    res.json({message: 'Hello World!'})
 })
+app.get('/users', (req, res, next) => {
+    res.json({message: 'Hello users!'})
+})
+
 app.get('/metrics', async (_req, res) => {
     try {
         res.set('Content-Type', Prometheus.register.contentType);
@@ -80,18 +82,17 @@ type UserResponse = Array<{
 }>
 
 app.listen(port, () => {
-    console.log(`Server is running  esdfs adsas d ddasdasdsasdasdat http://localhost:${port}`);
     setInterval(() => {
-        axios.get("http://localhost:5000/user").then((response) => {
+        // axios.get("http://localhost:5000/users").then((response) => {
+        //     console.log(response.data, " " + Date.now())
+        // }).catch(ex => {
+        //     console.log(ex?.message, "err")
+        // })
+        axios.get("http://backend:5000").then((response) => {
             console.log(response.data, " " + Date.now())
         }).catch(ex => {
             console.log(ex?.message, "err")
         })
-        axios.get("http://localhost:5000").then((response) => {
-            console.log(response.data, " " + Date.now())
-        }).catch(ex => {
-            console.log(ex?.message, "err")
-        })
-    }, 5000)
+    }, 10)
 });
 
